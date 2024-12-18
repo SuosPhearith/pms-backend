@@ -1,0 +1,53 @@
+get http://localhost:8000/api/auth/hello/
+Content-Type: application/json
+
+{
+
+}
+###
+post http://localhost:8000/api/auth/register/
+Content-Type: application/json
+
+{
+    "username"      : "povveasna",
+    "email"         : "povveasna@gmail.com",
+    "password"      : "123456",
+    "password2"     : "123456",
+    "role"          : "MANAGER"
+}
+###
+post http://localhost:8000/api/auth/login/
+Content-Type: application/json
+
+{
+    "username"      : "admin",
+    "password"      : "123456"
+}
+###
+get http://localhost:8000/api/auth/me/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM0MDgxMTYxLCJpYXQiOjE3MzQwODA4NjEsImp0aSI6IjczZWRmZmFkODU4MTRjOThhOWUzN2E4YjFmYjc2N2JjIiwidXNlcl9pZCI6M30.EUWqmVkCxynK0P9biIE80RHVTEDbPt40C8bi24de8X0
+
+{
+    "username"      : "povveasna",
+    "password"      : "123456"
+}
+###
+get http://localhost:8000/api/auth/only-admin/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM0MDgyNjM4LCJpYXQiOjE3MzQwODIzMzgsImp0aSI6ImI2ZWM0ZGVjYTM2YTQ1ZmZhYjI3OTg5ZTlhNTA0ZmRiIiwidXNlcl9pZCI6MX0.-EwnmUssrXT_-HeM_d71tLV1ntaFhM5tPjEahPSSwys
+
+{
+    "username"      : "povveasna",
+    "password"      : "123456"
+}
+###
+get http://localhost:8000/api/auth/role-base/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM0MDg0ODQxLCJpYXQiOjE3MzQwODQ1NDEsImp0aSI6ImExMTkyNTg3YjJhMzQ2ODU5MjJmMDBjYWE0ODU5M2UxIiwidXNlcl9pZCI6MX0.5hL4EkYcaoRQdedZs1_EAJ4K0iSEnUR6FwdFqvjTsFk
+
+{
+    "username"      : "povveasna",
+    "password"      : "123456"
+}
+###

@@ -1,0 +1,169 @@
+1. user management
+	- User Roles & Permissions: Assign roles like Admin, Project Manager, and Team Member.
+	- Authentication: Secure login system.
+2. project planning
+	- Project Creation: Basic details like project name, description, deadlines.
+	- Task Management: Create, assign, and track tasks with due dates.
+
+==============================================================================================================
+
+@Admin
+>> PMS System:
+	=> Backend 	(%) 
+	=> Frontend	(%)
+	=> Deploy	(Status = 'pending', 'InProgress', 'done') => Comment
+	=> Testing	(Status = 'pending', 'InProgress', 'done') => Comment
+	=> Launch	(Status = 'pending', 'InProgress', 'done') => Comment
+
+
+@Admin
+>> Admin create a new project that include above of paths and assign user to these system
+	=> Backend  > Manager, Developer
+	=> Frontend > Manager, Developer
+	=> Deploy   > Assign Tester(Manager or Developer) one User
+	=> Testing  > Assign Tester(Manager or Developer) multiple User
+	=> Launch   > Assign Tester(Manager or Developer) one User
+
+@Manager
+>> Feature and Function
+	=> Backend 
+		> Manager
+			- Crud task
+			- Assign to Developer
+			- Update task status to read
+	=> Frontend 
+		> Manager
+			- Crud task
+			- Assign to Developer
+			- Update task status to read
+	=> Deploy
+		> Manager
+			- View Comment
+			- Update Status
+			- Update task status to read
+	=> Testing
+		> Manager
+			- View Comment
+			- Update Status
+			- Update task status to read
+	=> Launch
+		> Manager
+			- View Comment
+			- Update Status
+			- Update task status to read
+
+
+@Developer
+>> Feature and Function
+	=> Backend 
+		> Developer
+			- Update Status
+			- Note in task
+	=> Frontend 
+		> Developer
+			- Update Status
+			- Note in task
+	=> Deploy
+		> Developer
+			- View Comment
+			- Create Comment
+	=> Testing
+		> Developer
+			- View Comment
+			- Create Comment
+	=> Launch
+		> Developer
+			- View Comment
+			- Create Comment
+
+==============================================================================================================
+
+1. user
+- id
+- first name
+- last name
+- username
+- email
+- password
+- role [admin , manager, developer]
+- status
+- created_at
+- updated_at
+- created_by
+- updated_by
+- deleted_at
+
+2. project
+- id
+- name
+- image
+- description
+- start_date
+- end_date
+- status ["Not Started", "In Progress", "Completed", "On Hold"]
+- priority [low, medium, high]
+- budget
+- spent
+- risk_level [low, medium, high]
+- tag
+- backend_percentage INT DEFAULT 0,
+- frontend_percentage INT DEFAULT 0,
+- deploy_percentage INT DEFAULT 0,
+- testing_percentage INT DEFAULT 0,
+- launch_percentage INT DEFAULT 0,
+- manager_id fk
+- created_at
+- updated_at
+- created_by
+- updated_by
+- deleted_at
+
+3. task
+- id
+- project_id
+- stage ENUM('Backend', 'Frontend', 'Deploy', 'Testing', 'Launch')
+- task_name
+- task_description
+- status ENUM('pending', 'InProgress', 'done') DEFAULT 'pending'
+- assigned_to : user_id role Developer
+- created_at
+- updated_at
+- created_by
+- updated_by
+- deleted_at
+
+4. note
+- id
+- task_id INT,
+- user_id INT,
+- status ['Information', 'Suggestion', 'Requirement', 'unimplemented']
+- seen
+- note_text TEXT,
+- created_at
+- updated_at
+- created_by
+- updated_by
+- deleted_at
+
+
+
+
+manager only assign manager to project
+
+and manager assign developer to backend, frontend, deploy, testing, launch
+
+@admin: project_id, manager_id
+@manager : project_id, manager_id, developer_id
+
+
+task: stage value
+
+
+
+
+
+
+
+
+
+
