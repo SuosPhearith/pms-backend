@@ -27,4 +27,10 @@ class UserUpdateSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=150, required=True)
     email = serializers.EmailField(required=True)
     role = serializers.CharField(max_length=50 , required = True)
+    
+    
+class UserResetPasswordSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    password = serializers.CharField(min_length=6, max_length = 100, required=True)
+    password2 = serializers.CharField(min_length=6, max_length = 100, required=True)
         

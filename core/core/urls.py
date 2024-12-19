@@ -8,4 +8,5 @@ urlpatterns = [
     path('api/task/', include('task.urls')),
     path('api/option/', include('option.urls')),
     path('api/user/', include('user.urls')),
+    path('api/todo/', include('todo.urls')),
 ]

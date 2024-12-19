@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from django.contrib.auth.models import User
-from .serializers import UserReadOnlySerializer, UserUpdateSerializer
+from .serializers import UserReadOnlySerializer, UserUpdateSerializer, UserResetPasswordSerializer
 from rest_framework.permissions import AllowAny
 from authentication.authorization import IsAdminAuthenticated
 
@@ -56,6 +56,18 @@ class UserView(APIView):
             user.save()
 
             return Response({"message": "User updated successfully"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @transaction.atomic
+    def patch(self, request):
+        serializer = UserResetPasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            if serializer.validated_data['password'] != serializer.validated_data['password2']:
+                return Response({'message': "Invalid Confirm Password"}, status=status.HTTP_400_BAD_REQUEST)
+            user = get_object_or_404(User, id=serializer.validated_data['id'])
+            user.set_password(serializer.validated_data['password'])
+            user.save()
+            return Response({"message": "Password updated successfully"}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 user_view = UserView.as_view()
