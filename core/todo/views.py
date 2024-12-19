@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from task.models import Task
-from .serializers import TodoViewOnlySerializer, TodoUpdateStatus
+from .serializers import TodoViewOnlySerializer, TodoUpdateStatus, TodoCreateRemark
 from rest_framework.permissions import AllowAny
 from rest_framework.filters import OrderingFilter, SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
@@ -42,9 +42,25 @@ class TodoView(APIView):
             task.status = serializer.validated_data['status']
             if serializer.validated_data['status'] == 'done' :
                 task.submited_at = timezone.now()  
-            task.submited_status = 'OnTime' if task.due_at > timezone.now() else 'late'
+                task.submited_status = 'OnTime' if task.due_at > timezone.now() else 'late'
             task.save()
 
             return Response({"message": "Task status updated successfully"}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def post(self, request):
+        serializer = TodoCreateRemark(data=request.data)
+        if serializer.is_valid():
+            task = get_object_or_404(Task, id=serializer.validated_data['taskId'])
+            if task.assigned_to_id != request.user.id:
+                return Response({'message': "This task does not belong to you."}, status=status.HTTP_400_BAD_REQUEST)
+
+            task.remark_note = serializer.validated_data['remark_note']
+            task.remark_status = serializer.validated_data['remark_status']
+            task.save()
+
+            return Response({"message": "Task status updated successfully"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
  

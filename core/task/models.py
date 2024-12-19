@@ -22,6 +22,13 @@ class Task(models.Model):
         ('OnTime', 'On Time'),
         ('late', 'Late'),
     ]
+    
+    REMARK_STATUS = [
+        ('Information', 'Information'),
+        ('Suggestion', 'Suggestion'),
+        ('Requirement', 'Requirement'),
+        ('Unimplement', 'Unimplement'),
+    ]
 
 
     id              = models.AutoField(primary_key=True)
@@ -34,6 +41,10 @@ class Task(models.Model):
     due_at          = models.DateTimeField(null=True, blank=True)
     submited_at     = models.DateTimeField(null=True, blank=True)
     submited_status = models.CharField(max_length=20,choices=STATUS_SUBMIT,null=True, blank=True,)
+    
+    remark_note     = models.TextField(max_length=400,null=True, blank=True,)
+    remark_status   = models.CharField(max_length=20,choices=REMARK_STATUS,null=True, blank=True)
+    remark_seen     = models.BooleanField(default=False)
     
     created_at      = models.DateTimeField(auto_now_add=True)
     updated_at      = models.DateTimeField(auto_now=True)
