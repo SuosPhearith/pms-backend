@@ -61,7 +61,6 @@ class MeView(APIView):
 
     def get(self, request):
         user = request.user
-        print('hellow')
         account = Account.objects.get(user=user)  # Fetch the user's associated account
         serializer = AccountSerializer(account).data
         return Response({

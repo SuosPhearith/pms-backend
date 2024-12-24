@@ -4,13 +4,21 @@ from project.models import Project
 from .models import Task
 from project.serializers import UserSerializer
 
+from django_filters import rest_framework as filters
+from .models import Task
+
 class ProjectSerializer(serializers.ModelSerializer):
     manager = UserSerializer(read_only=True)
     created_by = UserSerializer(read_only=True)
     class Meta:
         model = Project
         fields = ['id', 'name', 'start_date', 'end_date', 'manager', 'created_by', 'priority']
+class TaskFilter(filters.FilterSet):
+    due_at = filters.DateFromToRangeFilter()
 
+    class Meta:
+        model = Task
+        fields = ['status', 'stage', 'project', 'assigned_to', 'created_by', 'updated_by', 'due_at']
 class TaskSerializer(serializers.ModelSerializer):
     assigned_to = UserSerializer(read_only=True)
     created_by = UserSerializer(read_only=True)

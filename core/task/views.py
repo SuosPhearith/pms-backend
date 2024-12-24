@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from .models import Task
-from .serializers import TaskSerializer, TaskCreateSerializer
+from .serializers import TaskSerializer, TaskCreateSerializer, TaskFilter
 from rest_framework.permissions import AllowAny
 from rest_framework.exceptions import ValidationError
 from authentication.models import Account
@@ -10,21 +10,27 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
+from django.shortcuts import get_object_or_404
 
 
 
 
 class TaskReadOnlyViewSet(ReadOnlyModelViewSet):
-    queryset = Task.objects.filter(deleted_at=False, project__deleted_at=False)
+    def get_queryset(self):
+        account = get_object_or_404(Account, user_id = self.request.user.id)
+        if account.role == 'MANAGER':
+            return Task.objects.filter(deleted_at=False, project__deleted_at=False, project__manager_id = self.request.user.id)
+        else:
+            return Task.objects.filter(deleted_at=False, project__deleted_at=False)
     serializer_class = TaskSerializer
     permission_classes = [AllowAny]
 
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     search_fields = ['name', 'description']
-    ordering_fields = ['id', 'project', 'name', 'stage','due_at','submited_at', 'description', 'status', 'assigned_to', 'created_at', 'updated_at', 'created_by', 'updated_by']
+    ordering_fields = ['id', 'project', 'submited_status', 'name', 'stage','due_at','submited_at', 'description', 'status', 'assigned_to', 'created_at', 'updated_at', 'created_by', 'updated_by']
     ordering = ['created_at']
 
-    filterset_fields = ['status', 'stage',  'project', 'assigned_to', 'created_by', 'updated_by']
+    filterset_class = TaskFilter
 
 
 class TaskModifyViewSet(ModelViewSet):

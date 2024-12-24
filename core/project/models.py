@@ -54,3 +54,16 @@ class Project(models.Model):
     
     class Meta:
         db_table = 'project'
+
+class ProjectDeveloper(models.Model):
+    id = models.AutoField(primary_key=True)
+    developer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="managed_projects_developer")
+    project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True, related_name="managed_project")
+
+    def __str__(self):
+        return str(self.id)
+
+    class Meta:
+        db_table = 'project_developer'
+
+    

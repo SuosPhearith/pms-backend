@@ -20,6 +20,25 @@ class IsAdminAuthenticated(BasePermission):
         
         return False
     
+class IsAdminAndManagerAuthenticated(BasePermission):
+    """
+    Allows access only to authenticated users with the 'ADMIN' role.
+    """
+
+    def has_permission(self, request, view):
+        # Check if the user is authenticated
+        if not request.user or not request.user.is_authenticated:
+            return False
+        # Check if the user has an associated Account and the role is "ADMIN"
+        try:
+            account = Account.objects.get(user=request.user)
+            if account.role == "ADMIN" or account.role == "MANAGER":
+                return True
+        except Account.DoesNotExist:
+            return False
+        
+        return False
+    
 class IsManagerAuthenticated(BasePermission):
     """
     Allows access only to authenticated users with the 'MANAGER' role.
