@@ -136,7 +136,7 @@
 - id
 - task_id INT,
 - user_id INT,
-- status ['Information', 'Suggestion', 'Requirement', 'unimplemented']
+- status ['Information', 'Suggestion', 'Requirement', 'Unimplement']
 - seen
 - note_text TEXT,
 - created_at
@@ -144,6 +144,61 @@
 - created_by
 - updated_by
 - deleted_at
+
+// list all notes by taskId
+// create note
+// update note
+// update to seen
+
+
+
+=============
+10000 records
+
+whi
+const records = select * from data offset 500 * page;
+
+
+
+
+
+records = 5000
+
+xlx = xlx()
+file = for record in records
+	xlx(record)
+
+
+ 
+
+whole sale
+
+subwhole sale  => retailer => consumer
+
+
+for sale 
+
+feature
+
+- CRM : Customer relation management
+- POS : 
+- INVENTROY : 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
