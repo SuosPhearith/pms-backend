@@ -1,4 +1,5 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from authentication.authorization import IsAdminAndManagerAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from authentication.authorization import Roles
@@ -9,6 +10,7 @@ from django.db.models import Subquery
 
 
 @api_view(['GET'])
+@permission_classes([IsAdminAndManagerAuthenticated])
 def list_managers(request):
     # Get user role
     userId = request.user.id
@@ -24,6 +26,7 @@ def list_managers(request):
 
 
 @api_view(['GET'])
+@permission_classes([IsAdminAndManagerAuthenticated])
 def list_projects(request):
     # Get user role
     userId = request.user.id
@@ -39,6 +42,7 @@ def list_projects(request):
 
 
 @api_view(['GET'])
+@permission_classes([IsAdminAndManagerAuthenticated])
 def list_developers(request):
     projectId = request.query_params.get('projectId')
     if projectId:

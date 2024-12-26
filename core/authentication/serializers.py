@@ -7,8 +7,6 @@ class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
     role = serializers.ChoiceField(choices=["ADMIN", "MANAGER", "DEVELOPER"], write_only=True)
-
-
     class Meta:
         model = User
         fields = ['username', 'email', 'password', 'password2', 'role', 'first_name', 'last_name']
@@ -35,6 +33,28 @@ class RegisterSerializer(serializers.ModelSerializer):
         Account.objects.create(user=user, role=role)  # Create an empty Account for the user
         return user
 
+class UpdateProfileSerializer(serializers.Serializer):
+    first_name = serializers.CharField(write_only=True, required=True)
+    last_name = serializers.CharField(write_only=True, required=True)
+    username = serializers.CharField(write_only=True, required=True)
+    email = serializers.CharField(write_only=True, required=True)
+
+class UpdatePasswordSerializer(serializers.Serializer):
+    current_password = serializers.CharField(
+        write_only=True, required=True, min_length=6, max_length=30
+    )
+    new_password = serializers.CharField(
+        write_only=True, required=True, min_length=6, max_length=30
+    )
+    confirm_password = serializers.CharField(
+        write_only=True, required=True, min_length=6, max_length=30
+    )
+
+    def validate(self, data):
+        # Ensure the new password and confirm password match
+        if data['new_password'] != data['confirm_password']:
+            raise serializers.ValidationError("New password and confirm password do not match.")
+        return data
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

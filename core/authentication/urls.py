@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import hello_view, register_view, login_view, me_view, only_admin_view, role_base_view, token_refresh_view
+from .views import hello_view, register_view, login_view, me_view, only_admin_view, role_base_view, token_refresh_view, bad_account_view, profile_view
 
 urlpatterns = [
     path('hello/',       hello_view,            name='hello_view'),
@@ -9,4 +9,6 @@ urlpatterns = [
     path('me/',          me_view,               name='me_view'),
     path('only-admin/',  only_admin_view,       name='only_admin_view'),
     path('role-base/',   role_base_view,        name='role_base_view'),
+    path('ban/',         bad_account_view,      name='bad_account_view'),
+    path('profile/',     profile_view,          name='profile_view'),
 ]

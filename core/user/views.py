@@ -14,11 +14,8 @@ from authentication.models import Account
 from django.db import transaction
 
 
-
-
-
 class UserReadOnlyViewSet(ReadOnlyModelViewSet):
-    queryset = User.objects.filter(is_active=True, is_superuser=False)
+    queryset = User.objects.filter(is_superuser=False).select_related('account')
     serializer_class = UserReadOnlySerializer
     permission_classes = [IsAdminAuthenticated]
     
@@ -27,7 +24,9 @@ class UserReadOnlyViewSet(ReadOnlyModelViewSet):
     ordering_fields = ['id', 'date_joined' , 'email', 'username',]
     ordering = ['date_joined']
     
-    # filterset_fields = ['role']
+    filterset_fields = {
+        'account__role': ['exact'],
+    }
 
 
 class UserView(APIView):

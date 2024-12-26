@@ -5,7 +5,7 @@ from rest_framework.exceptions import ValidationError
 from .models import Project, ProjectDeveloper
 from authentication.models import Account
 from .serializers import ProjectSerializer, ProjectReadOnlySerializer, UpdateProgressSerializer
-from authentication.authorization import IsAdminAuthenticated, IsManagerAuthenticated
+from authentication.authorization import IsAdminAuthenticated, IsManagerAuthenticated, IsAdminAndManagerAuthenticated
 from rest_framework.filters import OrderingFilter, SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import AllowAny
@@ -16,9 +16,6 @@ from rest_framework.views import APIView
 from django.contrib.auth.models import User
 from django.db import transaction
 
-
-
-
 class ProjectReadOnlyViewSet(ReadOnlyModelViewSet):
     def get_queryset(self):
         return Project.objects.filter(
@@ -26,7 +23,7 @@ class ProjectReadOnlyViewSet(ReadOnlyModelViewSet):
             manager_id=self.request.user.id 
         )
     serializer_class    = ProjectReadOnlySerializer
-    permission_classes  = [AllowAny]
+    permission_classes  = [IsAdminAndManagerAuthenticated]
     
     filter_backends     = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     search_fields       = ['name', 'description', 'tag']
